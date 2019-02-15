@@ -1,0 +1,1 @@
+1. 该demo与 2.1.hello_triangle 案例相同

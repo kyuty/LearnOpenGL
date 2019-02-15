@@ -28,6 +28,14 @@ cd build
 cmake ../.
 make -j8
 ```
+or
+```
+brew upgrade cmake
+cmake -version
+    cmake version 3.13.4
+directly open LearnOpenGL dir by CLion.
+(CLion will use cmake-3.13.4, gen "cmake-build-debug" dir)
+```
 
 ## Glitter
 Polytonic created a project called [Glitter](https://github.com/Polytonic/Glitter) that is a dead-simple boilerplate for OpenGL. 

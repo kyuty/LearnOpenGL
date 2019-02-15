@@ -26,8 +26,8 @@ find_package(ASSIMP REQUIRED)
 message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 # find_package(SOIL REQUIRED)
 # message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
-# find_package(GLEW REQUIRED)
-# message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+find_package(GLEW REQUIRED)
+message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
 
 if(WIN32)
   set(LIBS glfw3 opengl32 assimp)
@@ -48,7 +48,7 @@ elseif(APPLE)
   FIND_LIBRARY(CoreVideo_LIBRARY CoreVideo)
   MARK_AS_ADVANCED(COCOA_LIBRARY OpenGL_LIBRARY)
   SET(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY} ${CoreVideo_LIBRARY})
-  SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY})
+  SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY} ${GLEW_LIBRARY})
   set(LIBS ${LIBS} ${APPLE_LIBS})
 else()
   set(LIBS )
@@ -65,6 +65,30 @@ set(CHAPTERS
 )
 
 set(1.getting_started
+    0.01_hello_glfw
+    0.02_hellotriangle
+    0.02_hellotriangle2
+    0.03_hello_triangle_exercise1
+    0.04_hello_triangle_exercise2
+    0.05_hello_triangle_exercise3
+    0.06_shaders_uniform
+    0.07_shaders_interpolated
+    0.08_shaders_using_object
+    0.09_textures_combined
+    0.10_textures_exercise2
+    0.11_textures_exercise3
+    0.12_textures_exercise4
+    0.13_transformations
+    0.14_transformations_exercise2
+    0.15_coordinate_systems
+    0.16_coordinate_systems_with_depth
+    0.17_coordinate_systems_multiple_objects
+    0.18_camera_circle
+    0.19_camera_keyboard
+    0.20_camera_keyboard_dt
+    0.21_camera_mouse
+    0.22_camera_zoom
+    0.23_camera_with_class
     1.1.hello_window
     1.2.hello_window_clear
     2.1.hello_triangle
@@ -92,6 +116,20 @@ set(1.getting_started
 )
 
 set(2.lighting
+    0.24_colors_scene
+    0.25_basic_lighting_diffuse
+    0.26_basic_lighting_specular
+    0.27_basic_lighting_exercise2
+    0.28_basic_lighting_exercise3
+    0.29_materials
+    0.30_materials_exercise1
+    0.31_lighting_maps_diffuse
+    0.32_lighting_maps_specular
+    0.33_light_casters_directional
+    0.34_light_casters_point
+    0.35_light_casters_spotlight_hard
+    0.36_light_casters_spotlight_soft
+    0.37_multiple_lights
     1.colors
     2.1.basic_lighting_diffuse
     2.2.basic_lighting_specular
@@ -108,10 +146,19 @@ set(2.lighting
 )
 
 set(3.model_loading
+    0.38_model_diffuse
+    0.39_model_exercise1
     1.model_loading
 )
 
 set(4.advanced_opengl
+    0.40_depth_testing_func
+    0.41_stencil_testing
+    0.42_stencil_testing1
+    0.43_blending_discard
+    0.44_blending_sorted
+    0.45_face_culling
+    0.46_framebuffers_screen_texture
     1.1.depth_testing
     1.2.depth_testing_view
     2.stencil_testing
@@ -139,6 +186,7 @@ set(5.advanced_lighting
     3.1.3.shadow_mapping
     3.2.1.point_shadows
     3.2.2.point_shadows_soft
+#    3.3.csm
     4.normal_mapping
     5.1.parallax_mapping
     5.2.steep_parallax_mapping
