@@ -2,7 +2,7 @@
 
 绘制10个立方体，摄像机围绕着中心点不停转动。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/7.1.camera_circle/result.gif)
+![result](result.gif)
 
 
 
