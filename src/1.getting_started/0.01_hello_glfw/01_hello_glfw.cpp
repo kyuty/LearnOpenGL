@@ -80,7 +80,7 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-		// 检查是否有key事件，鼠标事件等。若有则回调相关方法
+		// 检查是否有key事件，鼠标事件等。若有，则回调相关方法
 		glfwPollEvents();
 
 		// Render

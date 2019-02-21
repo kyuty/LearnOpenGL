@@ -11,7 +11,11 @@
 #include <GLFW/glfw3.h>
 
 // Other includes
-#include "Shader.h"
+#include "Utils/Shader.h"
+
+//#define _MODE_DEFINE_
+//#define _MODE_OFFSET_
+#define _MODE_USE_POS_
 
 
 // Function prototypes
@@ -31,6 +35,10 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
@@ -48,12 +56,13 @@ int main()
 
 
 	// Build and compile our shader program
-	//Shader ourShader("shaders_using_object.vert", "shaders_using_object.frag");
-	// ----------------使用shaders_using_object1.vert  下方还有代码需要解开注释
-	//Shader ourShader("shaders_using_object1.vert", "shaders_using_object.frag");
-	// ----------------使用shaders_using_object2.vert
-	Shader ourShader("shaders_using_object2.vert", "shaders_using_object2.frag");
-
+#ifdef _MODE_DEFINE_
+	Shader ourShader("vs_invert.vert", "fs_use_color.frag");
+#elif defined(_MODE_OFFSET_)
+	Shader ourShader("vs_offset.vert", "fs_use_color.frag");
+#elif defined(_MODE_USE_POS_)
+	Shader ourShader("vs_out_pos.vert", "fs_use_pos.frag");
+#endif
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] = {
@@ -95,9 +104,10 @@ int main()
 		// Draw the triangle
 		ourShader.Use();
 
-		// ----------------使用shaders_using_object1.vert的时候,将下方两行代码注释开
-		//GLfloat offset = 0.5f;
-		//glUniform1f(glGetUniformLocation(ourShader.Program, "xOffset"), offset);
+#ifdef _MODE_OFFSET_
+		GLfloat offset = 0.5f;
+		glUniform1f(glGetUniformLocation(ourShader.Program, "xOffset"), offset);
+#endif
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

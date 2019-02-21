@@ -1,6 +1,3 @@
-// 04_hello_triangle_exercise2.cpp : 定义控制台应用程序的入口点。
-//使用不同的VAO（和VBO）创建同样的2个三角形，每个三角形的数据要不同（提示：创建2个顶点数据数组，而不是1个）
-
 #include <iostream>
 
 // GLEW
@@ -43,6 +40,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Learn OpenGL", nullptr, nullptr);

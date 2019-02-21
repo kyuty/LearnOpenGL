@@ -15,6 +15,15 @@ public:
 	// Constructor generates the shader on the fly
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
 	{
+		{
+			std::cout << " ------ vertexPath ------ begin" << std::endl;
+			std::cout << vertexPath << std::endl;
+			std::cout << " ------ vertexPath ------ end\n" << std::endl;
+			std::cout << " ------ fragmentPath ------ begin" << std::endl;
+			std::cout << fragmentPath << std::endl;
+			std::cout << " ------ fragmentPath ------ end\n" << std::endl;
+		}
+
 		// 1. Retrieve the vertex/fragment source code from filePath
 		std::string vertexCode;
 		std::string fragmentCode;
@@ -38,8 +47,14 @@ public:
 			// Convert stream into string
 			vertexCode = vShaderStream.str();
 			fragmentCode = fShaderStream.str();
-			std::cout << vertexCode << std::endl;
-			std::cout << fragmentCode << std::endl;
+			{
+				std::cout << " ------ vertexCode ------ begin" << std::endl;
+				std::cout << vertexCode << std::endl;
+				std::cout << " ------ vertexCode ------ end\n" << std::endl;
+				std::cout << " ------ fragmentCode ------ begin" << std::endl;
+				std::cout << fragmentCode << std::endl;
+				std::cout << " ------ fragmentCode ------ end\n" << std::endl;
+			}
 		}
 		catch (std::ifstream::failure e)
 		{

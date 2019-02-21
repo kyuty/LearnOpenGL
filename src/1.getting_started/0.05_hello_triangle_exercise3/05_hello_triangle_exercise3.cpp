@@ -1,6 +1,3 @@
-// 05_hello_triangle_exercise3.cpp : 定义控制台应用程序的入口点。
-//创建两个着色器程序（shader program），第二个程序使用不同的像素着色器，它输出黄色；绘制这两个三角形，其中一个输出为黄色
-
 #include <iostream>
 
 // GLEW
@@ -47,6 +44,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);

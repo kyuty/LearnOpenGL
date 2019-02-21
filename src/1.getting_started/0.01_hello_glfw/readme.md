@@ -1,5 +1,15 @@
- 1. hello_glfw 和 hello_window_clear 案例是相同的
- 2. if link error:
+
+
+介绍：初始化glfw。glclear为0.2f, 0.3f, 0.3f, 1.0f
+
+![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.01_hello_glfw/result.png)
+
+
+
+----
+
+if link error:
+
 ```
 [ 75%] Linking CXX executable bin/1.getting_started/1.getting_started__1.3.hello_glfw
 Apple LLVM version 10.0.0 (clang-1000.11.45.5)
@@ -30,5 +40,3 @@ in "CMakeLists.txt", add:
     message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
     SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY} ${GLEW_LIBRARY})
 ```
-
-3. 

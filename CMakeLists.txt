@@ -24,10 +24,10 @@ find_package(GLFW3 REQUIRED)
 message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
 find_package(ASSIMP REQUIRED)
 message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
-# find_package(SOIL REQUIRED)
-# message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
-find_package(GLEW REQUIRED)
-message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+#find_package(GLEW REQUIRED)
+#message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+#find_package(SOIL REQUIRED)
+#message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
 
 if(WIN32)
   set(LIBS glfw3 opengl32 assimp)
@@ -48,7 +48,8 @@ elseif(APPLE)
   FIND_LIBRARY(CoreVideo_LIBRARY CoreVideo)
   MARK_AS_ADVANCED(COCOA_LIBRARY OpenGL_LIBRARY)
   SET(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY} ${CoreVideo_LIBRARY})
-  SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY} ${GLEW_LIBRARY})
+  SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY})
+#  SET(APPLE_LIBS ${APPLE_LIBS} ${GLEW_LIBRARY} ${SOIL_LIBRARY})
   set(LIBS ${LIBS} ${APPLE_LIBS})
 else()
   set(LIBS )
@@ -237,6 +238,10 @@ foreach(CHAPTER ${CHAPTERS})
             "src/${CHAPTER}/${DEMO}/*.vs"
             "src/${CHAPTER}/${DEMO}/*.fs"
             "src/${CHAPTER}/${DEMO}/*.gs"
+            "src/${CHAPTER}/${DEMO}/*.vert"
+            "src/${CHAPTER}/${DEMO}/*.frag"
+            "src/${CHAPTER}/${DEMO}/*.png"
+            "src/${CHAPTER}/${DEMO}/*.jpg"
         )
         set(NAME "${CHAPTER}__${DEMO}")
         add_executable(${NAME} ${SOURCE})
@@ -253,9 +258,12 @@ foreach(CHAPTER ${CHAPTERS})
         # copy shader files to build directory
         file(GLOB SHADERS
                  "src/${CHAPTER}/${DEMO}/*.vs"
-                 # "src/${CHAPTER}/${DEMO}/*.frag"
                  "src/${CHAPTER}/${DEMO}/*.fs"
                  "src/${CHAPTER}/${DEMO}/*.gs"
+                 "src/${CHAPTER}/${DEMO}/*.vert"
+                 "src/${CHAPTER}/${DEMO}/*.frag"
+                 "src/${CHAPTER}/${DEMO}/*.png"
+                 "src/${CHAPTER}/${DEMO}/*.jpg"
         )
         foreach(SHADER ${SHADERS})
             if(WIN32)

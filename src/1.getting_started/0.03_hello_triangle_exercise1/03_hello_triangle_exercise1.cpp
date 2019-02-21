@@ -1,6 +1,3 @@
-// 03_hello_triangle_exercise1.cpp : 定义控制台应用程序的入口点。
-// 尝试使用glDrawArrays以在你的数据中添加更多顶点的方式，绘制两个彼此相连的三角形。
-
 #include <iostream>
 
 // GLEW
@@ -43,6 +40,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Learn OpenGL", nullptr, nullptr);

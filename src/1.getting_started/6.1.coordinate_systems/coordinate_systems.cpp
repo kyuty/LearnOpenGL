@@ -13,9 +13,12 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+void printMat4(glm::mat4 transform);
+void perspectiveToFrustum();
+void frustumToPerspective();
 
 // settings
-const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_WIDTH = 600;
 const unsigned int SCR_HEIGHT = 600;
 
 int main()
@@ -146,6 +149,8 @@ int main()
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
 
+    perspectiveToFrustum();
+    frustumToPerspective();
 
     // render loop
     // -----------
@@ -180,9 +185,11 @@ int main()
         unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
         unsigned int viewLoc  = glGetUniformLocation(ourShader.ID, "view");
         // pass them to the shaders (3 different ways)
+        // 三种方式给shader传值
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
         // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        // 注意：目前我们每帧都设置了投影矩阵，但由于投影矩阵很少改变，因此通常最好将它设置在主循环之外一次。
         ourShader.setMat4("projection", projection);
 
         // render container
@@ -222,4 +229,75 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void printMat4(glm::mat4 transform) {
+    /*
+    这是我打印的问题
+    我打印矩阵的形式  看似是行矩阵
+    那是因为我打印的摆放顺序不对，我应该列着摆放；但是我写的两个for是横着摆放的，所以看的像是列矩阵。
+    实际上glm和OpenGL都是 列为主 的矩阵
+    */
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cout << transform[i][j] << "   ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+void perspectiveToFrustum() {
+    // 已知 fov aspect near far (fov指的是bottom top方向的弧度)
+    // 求 left right bottom top
+
+    // 已知 --------------- begin
+    float zNear = 0.1f;
+    float aspect = 1.0f; // (float) SCR_WIDTH / (float) SCR_HEIGHT
+    float zFar = 100.0f;
+    float dbFov = 45.0f * M_PI / 180.0;
+    // 已知 --------------- end
+    // 打印已知的projection
+    glm::mat4 projectionKnow = glm::perspective(dbFov, aspect, zNear, zFar);
+    printMat4(projectionKnow);
+
+
+    // 计算frustum参数
+    float dbTan = tan(dbFov / 2);
+    float resultLeftRight = zNear * dbTan * aspect * 2;
+    float resultBottomTop = zNear * dbTan * 2;
+    std::cout << "resultLeftRight = " << resultLeftRight << std::endl;
+    std::cout << "resultBottomTop = " << resultBottomTop << std::endl;
+    glm::mat4 projection = glm::frustum(-resultLeftRight / 2, resultLeftRight / 2,
+                              -resultBottomTop / 2, resultBottomTop / 2, zNear, zFar);
+    printMat4(projection);
+}
+
+void frustumToPerspective() {
+    // 已知 left right bottom top near far
+    // 求 fov aspect (fov指的是bottom top方向的弧度)
+
+    // 已知 --------------- begin
+    float width = 0.0828427f;
+    float height = 0.0828427f;
+    float left = -width / 2;
+    float right = width / 2;
+    float top = height / 2;
+    float bottom = -height / 2;
+    float near = 0.1f;
+    float far = 100.0f;
+    // 已知 --------------- end
+    // 打印已知的projection
+    glm::mat4 projectionKnow = glm::frustum(left, right, bottom, top, near, far);
+    printMat4(projectionKnow);
+
+
+    // 计算perspective参数
+    float resultAspect = width / height;
+    float resultFov = atan2(top, near) * 2;
+    std::cout << "resultAspect = " << resultAspect << std::endl;
+    std::cout << "resultFov = " << (resultFov / M_PI * 180) << std::endl;
+
+    glm::mat4 projection = glm::perspective(resultFov, resultAspect, near, far);
+    printMat4(projection);
 }

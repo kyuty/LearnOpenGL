@@ -1,6 +1,3 @@
-// 13_transformations.cpp : 定义控制台应用程序的入口点。
-//
-
 #include <iostream>
 
 // GLEW
@@ -18,7 +15,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Other includes
-#include "Shader.h"
+#include "Utils/Shader.h"
+
+#define __OPEN_LOG__
 
 
 // Function prototypes
@@ -38,6 +37,10 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
@@ -55,7 +58,7 @@ int main()
 
 
 	// Build and compile our shader program
-	Shader ourShader("shaders/transformations.vert", "shaders/transformations.frag");
+	Shader ourShader("0.13_transformations.vert", "0.13_transformations.frag");
 
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
@@ -112,7 +115,7 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// Load, create texture and generate mipmaps
 	int width, height;
-	unsigned char* image = SOIL_load_image("textures/container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+	unsigned char* image = SOIL_load_image("0.13_container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -129,7 +132,7 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// Load, create texture and generate mipmaps
-	image = SOIL_load_image("textures/awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
+	image = SOIL_load_image("0.13_awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -169,21 +172,21 @@ int main()
 
 		// Create transformations
 		std::cout << "变换矩阵 = 平移*旋转" << std::endl;
-		glm::mat4 transform1;
+		glm::mat4 transform1 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform1[i][j] << "   ";
 			}
 			std::cout << std::endl;
 		}
-		transform1 = glm::translate(transform1, glm::vec3(0.5f, -0.5f, 0.0f));
+		transform1 = glm::translate(transform1, glm::vec3(0.0f, 0.0f, 0.0f));
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform1[i][j] << "   ";
 			}
 			std::cout << std::endl;
 		}
-		transform1 = glm::rotate(transform1, glm::radians((GLfloat)glfwGetTime() * 50.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		//transform1 = glm::rotate(transform1, glm::radians((GLfloat)glfwGetTime() * 50.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform1[i][j] << "   ";
@@ -195,7 +198,7 @@ int main()
 
 		// Create transformations
 		std::cout << "变换矩阵 = 平移*旋转*缩放" << std::endl;
-		glm::mat4 transform2;
+		glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform2[i][j] << "   ";
@@ -227,7 +230,7 @@ int main()
 		std::cout << "===============================" << std::endl;
 
 		std::cout << "变换矩阵 = 旋转*平移" << std::endl;
-		glm::mat4 transform;
+		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform[i][j] << "   ";
@@ -241,7 +244,7 @@ int main()
 			}
 			std::cout << std::endl;
 		}
-		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f)); // Switched the order        
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f)); // Switched the order
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				std::cout << transform[i][j] << "   ";
@@ -261,11 +264,11 @@ int main()
 
 		//std::cout << "当前是顶点先旋转后平移的现象." << std::endl;
 		//std::cout << "===============================" << std::endl;
-		//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform1));
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform1));
 
 		std::cout << "===========当前是顶点先缩放后旋转后平移的现象===========." << std::endl;
 		std::cout << "==============================" << std::endl;
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+//		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
 
 		// Draw container
 		glBindVertexArray(VAO);

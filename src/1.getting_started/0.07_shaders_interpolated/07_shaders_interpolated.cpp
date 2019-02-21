@@ -1,7 +1,3 @@
-// 07_shaders_interpolated.cpp : 定义控制台应用程序的入口点。
-//
-
-
 #include <iostream>
 
 // GLEW
@@ -46,6 +42,10 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
@@ -116,15 +116,19 @@ int main()
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(VAO);
 
+	// bind VBO, bind buffer data
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	// bind完buffer数据之后，调用glVertexAttribPointer来指定数据格式和顺序
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
+	GLuint loc_pos = 0;
+	glVertexAttribPointer(loc_pos, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(loc_pos);   // 记得开启location
 	// Color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));	//最后一个参数是指数组的起始位置
-	glEnableVertexAttribArray(1);
+	GLuint loc_color = 1;
+	glVertexAttribPointer(loc_color, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));	//最后一个参数是指数组的起始位置
+	glEnableVertexAttribArray(loc_color); // 记得开启location
 
 	glBindVertexArray(0); // Unbind VAO
 
