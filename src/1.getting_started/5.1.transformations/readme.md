@@ -33,7 +33,7 @@ glm::mat4 method_rotate_trans(glm::vec3 trans, float degress, glm::vec3 axis) {
 }
 ```
 
-![result_rotate_trans](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_rotate_trans.png)
+![result_rotate_trans](result_rotate_trans.png)
 
 
 
@@ -53,7 +53,7 @@ glm::mat4 method_trans_rotate(glm::vec3 trans, float degress, glm::vec3 axis) {
 }
 ```
 
-![result_trans_rotate](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_trans_rotate.png)
+![result_trans_rotate](result_trans_rotate.png)
 
 
 
@@ -75,7 +75,7 @@ glm::mat4 method_rotate_scale(float degress, glm::vec3 axis, glm::vec3 scale) {
 }
 ```
 
-![result_rotate_scale](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_rotate_scale.png)
+![result_rotate_scale](result_rotate_scale.png)
 
 
 
@@ -97,7 +97,7 @@ glm::mat4 method_scale_rotate(float degress, glm::vec3 axis, glm::vec3 scale) {
 }
 ```
 
-![result_scale_rotate](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_scale_rotate.png)
+![result_scale_rotate](result_scale_rotate.png)
 
 
 
@@ -119,7 +119,7 @@ glm::mat4 method_trans_scale(glm::vec3 trans, glm::vec3 scale) {
 }
 ```
 
-![result_trans_scale](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_trans_scale.png)
+![result_trans_scale](result_trans_scale.png)
 
 
 
@@ -141,7 +141,7 @@ glm::mat4 method_scale_trans(glm::vec3 trans, glm::vec3 scale) {
 }
 ```
 
-![result_scale_trans](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_scale_trans.png)
+![result_scale_trans](result_scale_trans.png)
 
 
 
@@ -162,7 +162,7 @@ glm::mat4 method_trans_rotate_scale(glm::vec3 trans, float degress, glm::vec3 ax
 }
 ```
 
-![result_trans_rotate_scale](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_trans_rotate_scale.png)
+![result_trans_rotate_scale](result_trans_rotate_scale.png)
 
 
 
@@ -184,4 +184,4 @@ glm::mat4 method_scale_trans_rotate(glm::vec3 trans, float degress, glm::vec3 ax
 }
 ```
 
-![result_scale_trans_rotate](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/result_scale_trans_rotate.png)
+![result_scale_trans_rotate](result_scale_trans_rotate.png)

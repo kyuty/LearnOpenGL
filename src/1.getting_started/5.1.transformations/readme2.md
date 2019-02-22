@@ -10,7 +10,7 @@
 
 
 
-![image-20190221135844554](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md1.jpg)
+![image-20190221135844554](md1.jpg)
 
 
 
@@ -28,7 +28,7 @@
 
 
 
-![image-20190221135950267](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md2.jpg)
+![image-20190221135950267](md2.jpg)
 
 
 
@@ -40,7 +40,7 @@
 
 
 
-![image-20190221140009080](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md3.jpg)
+![image-20190221140009080](md3.jpg)
 
 
 
@@ -50,7 +50,7 @@
 
 
 
-![image-20190221140028294](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md4.jpg)
+![image-20190221140028294](md4.jpg)
 
 
 
@@ -62,7 +62,7 @@
 
 
 
-![image-20190221140059384](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md5.jpg)
+![image-20190221140059384](md5.jpg)
 
 
 
@@ -80,7 +80,7 @@
 
 
 
-![image-20190221140231429](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md6.jpg)
+![image-20190221140231429](md6.jpg)
 
 
 
@@ -90,7 +90,7 @@
 
 
 
-![image-20190221140249895](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md7.jpg)
+![image-20190221140249895](md7.jpg)
 
 
 
@@ -100,7 +100,7 @@
 
 
 
-![image-20190221140312503](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md8.jpg)
+![image-20190221140312503](md8.jpg)
 
 
 
@@ -116,7 +116,7 @@
 
 
 
-![image-20190221140406605](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md9.jpg)
+![image-20190221140406605](md9.jpg)
 
 
 
@@ -124,7 +124,7 @@
 
 
 
-![image-20190221140423774](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md10.jpg)
+![image-20190221140423774](md10.jpg)
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-![image-20190221140454345](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md11.jpg)
+![image-20190221140454345](md11.jpg)
 
 
 
@@ -144,7 +144,7 @@
 
 
 
-![image-20190221140530952](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md12.jpg)
+![image-20190221140530952](md12.jpg)
 
 
 
@@ -160,7 +160,7 @@
 
 
 
-![image-20190221140629615](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md13.jpg)
+![image-20190221140629615](md13.jpg)
 
 
 
@@ -174,7 +174,7 @@
 
 
 
-![image-20190221141348751](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md14.jpg)
+![image-20190221141348751](md14.jpg)
 
 
 
@@ -186,19 +186,19 @@
 
 矩阵与标量之间的加减定义如下：
 
-![image-20190221141439811](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md15.jpg)
+![image-20190221141439811](md15.jpg)
 
 标量值要加到矩阵的每一个元素上。矩阵与标量的减法也相似：
 
-![image-20190221141456549](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md16.jpg)
+![image-20190221141456549](md16.jpg)
 
 矩阵与矩阵之间的加减就是两个矩阵对应元素的加减运算，所以总体的规则和与标量运算是差不多的，只不过在相同索引下的元素才能进行运算。这也就是说加法和减法只对同维度的矩阵才是有定义的。一个3×2矩阵和一个2×3矩阵（或一个3×3矩阵与4×4矩阵）是不能进行加减的。我们看看两个2×2矩阵是怎样相加的：
 
-![image-20190221141516833](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md17.jpg)
+![image-20190221141516833](md17.jpg)
 
 同样的法则也适用于减法：
 
-![image-20190221141533799](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md18.jpg)
+![image-20190221141533799](md18.jpg)
 
 
 
@@ -208,7 +208,7 @@
 
 
 
-![image-20190221141619783](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md19.jpg)
+![image-20190221141619783](md19.jpg)
 
 
 
@@ -229,7 +229,7 @@
 
 
 
-![image-20190221141738533](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md20.jpg)
+![image-20190221141738533](md20.jpg)
 
 
 
@@ -249,7 +249,7 @@
 
 
 
-![image-20190221141806648](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md21.jpg)
+![image-20190221141806648](md21.jpg)
 
 
 
@@ -271,7 +271,7 @@
 
 
 
-![image-20190221141917149](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md22.jpg)
+![image-20190221141917149](md22.jpg)
 
 
 
@@ -293,7 +293,7 @@
 
 
 
-![image-20190221142145934](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md23.jpg)
+![image-20190221142145934](md23.jpg)
 
 
 
@@ -307,7 +307,7 @@
 
 
 
-![image-20190221142222767](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md24.jpg)
+![image-20190221142222767](md24.jpg)
 
 
 
@@ -354,7 +354,7 @@
 
 
 
-![image-20190221142415919](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md25.jpg)
+![image-20190221142415919](md25.jpg)
 
 
 
@@ -362,7 +362,7 @@
 
 
 
-![image-20190221142433743](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md26.jpg)
+![image-20190221142433743](md26.jpg)
 
 
 
@@ -370,7 +370,7 @@
 
 
 
-![image-20190221142454311](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md27.jpg)
+![image-20190221142454311](md27.jpg)
 
 
 
@@ -378,7 +378,7 @@
 
 
 
-![image-20190221142514832](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md28.jpg)
+![image-20190221142514832](md28.jpg)
 
 
 
@@ -398,7 +398,7 @@
 
 
 
-![image-20190221142613867](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md29.jpg)
+![image-20190221142613867](md29.jpg)
 
 
 
@@ -408,7 +408,7 @@
 
 
 
-![image-20190221142634891](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/5.1.transformations/md30.jpg)
+![image-20190221142634891](md30.jpg)
 
 
 

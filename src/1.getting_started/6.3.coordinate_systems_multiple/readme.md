@@ -4,7 +4,7 @@
 
 与画一个立方体不同的地方就是for循环10次，调10次glDrawArrays。（shader只需要一个，VAO只需要一个）
 
-![image-20190221202326111](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/6.3.coordinate_systems_multiple/result.jpg)
+![image-20190221202326111](result.jpg)
 
 ### Simple code
 

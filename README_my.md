@@ -46,9 +46,9 @@
 
 另外，glew的安装，见
 
-[glew]: !result(/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/readme.md)	"glew的mac安装"
+[glew]: !result(./src/1.getting_started/readme.md)	"glew的mac安装"
 
 soil的安装，见
 
-[soil]: !result(/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.09_textures_combined/readme_install_soil.md)	"soil的mac安装"
+[soil]: !result(./src/1.getting_started/0.09_textures_combined/readme_install_soil.md)	"soil的mac安装"
 

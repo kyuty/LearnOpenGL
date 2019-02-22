@@ -1,6 +1,6 @@
 介绍：画一个三角形，这是一个彩色的三角形。指定三角形三个顶点分别使用不同的颜色值，中间填充区域会根据这三个颜色进行插值计算，所以是彩色的三角形。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.07_shaders_interpolated/result.png)
+![result](result.png)
 
 
 

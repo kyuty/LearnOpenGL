@@ -2,7 +2,7 @@
 
 介绍：初始化glfw。glclear为0.2f, 0.3f, 0.3f, 1.0f
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.01_hello_glfw/result.png)
+![result](result.png)
 
 
 

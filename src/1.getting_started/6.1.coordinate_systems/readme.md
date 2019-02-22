@@ -2,7 +2,7 @@
 
 然后z轴移动-3距离。
 
-![image-20190221200038311](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/6.1.coordinate_systems/result.jpg)
+![image-20190221200038311](result.jpg)
 
 
 

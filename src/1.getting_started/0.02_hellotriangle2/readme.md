@@ -4,7 +4,7 @@
 
 绘制四角形，使用IBO。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.02_hellotriangle2/result.gif)
+![result](result.gif)
 
 ---
 

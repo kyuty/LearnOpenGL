@@ -2,7 +2,7 @@
 
 绘制10个立方体，可以用键盘wasd控制移动，用鼠标移动控制look方向，用鼠标滚轮控制视角。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/7.3.camera_mouse_zoom/result.gif)
+![result](../7.3.camera_mouse_zoom/result.gif)
 
 
 

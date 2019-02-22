@@ -2,7 +2,7 @@
 
 
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.02_hellotriangle/result.png)
+![result](result.png)
 
 
 

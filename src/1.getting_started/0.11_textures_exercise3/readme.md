@@ -4,4 +4,4 @@
 
 
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.11_textures_exercise3/result.png)
+![result](result.png)

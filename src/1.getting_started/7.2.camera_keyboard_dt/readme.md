@@ -4,7 +4,7 @@
 
 该摄像机永远 look的点 是 摄像机当前位置往z轴负方向1个单位。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/7.2.camera_keyboard_dt/result.gif)
+![result](result.gif)
 
 
 

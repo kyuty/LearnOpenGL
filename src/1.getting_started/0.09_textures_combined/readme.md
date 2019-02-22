@@ -2,7 +2,7 @@
 
 画一个长方形，在上面贴了两张图，并加了颜色。（往shader里传了两张图，前景图带有alpha，背景图不带alpha）
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.09_textures_combined/result.png)
+![result](result.png)
 
 
 

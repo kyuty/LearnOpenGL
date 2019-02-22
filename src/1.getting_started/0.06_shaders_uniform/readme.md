@@ -1,6 +1,6 @@
 案例介绍：运行demo后，三角形的颜色会随着时间不停得改变(从绿变黑，再变绿)
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.06_shaders_uniform/result.gif)
+![result](result.gif)
 
 
 

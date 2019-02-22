@@ -2,7 +2,7 @@
 
 在箱子的四个角落放置4个笑脸。
 
-![result](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/0.10_textures_exercise2/result.png)
+![result](result.png)
 
 ---
 

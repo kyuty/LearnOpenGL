@@ -25,7 +25,7 @@ while (!glfwWindowShouldClose(window))
 
 开启深度检测：
 
-![result_open_depth](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/6.2.coordinate_systems_depth/result_open_depth.gif)
+![result_open_depth](result_open_depth.gif)
 
 不开深度检测：
 
@@ -47,4 +47,4 @@ while (!glfwWindowShouldClose(window))
 
 
 
-![result_close_depth](/Users/wangdong/github/opengl/LearnOpenGL/src/1.getting_started/6.2.coordinate_systems_depth/result_close_depth.gif)
+![result_close_depth](result_close_depth.gif)
