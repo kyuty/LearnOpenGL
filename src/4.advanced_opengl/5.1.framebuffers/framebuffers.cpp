@@ -13,6 +13,9 @@
 
 #include <iostream>
 
+//#define __MODE_ORI__
+#define __MODE_MY__
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -128,13 +131,13 @@ int main()
     };
     float planeVertices[] = {
         // positions          // texture Coords 
-         5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
+         5.0f, -0.5f,  5.0f,  1.0f, 0.0f,
         -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
-        -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
+        -5.0f, -0.5f, -5.0f,  0.0f, 1.0f,
 
-         5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
-        -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
-         5.0f, -0.5f, -5.0f,  2.0f, 2.0f
+         5.0f, -0.5f,  5.0f,  1.0f, 0.0f,
+        -5.0f, -0.5f, -5.0f,  0.0f, 1.0f,
+         5.0f, -0.5f, -5.0f,  1.0f, 1.0f
     };
     float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
         // positions   // texCoords
@@ -269,6 +272,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
 
+#ifdef __MODE_ORI__
         // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
@@ -280,7 +284,21 @@ int main()
         glBindVertexArray(quadVAO);
         glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
         glDrawArrays(GL_TRIANGLES, 0, 6);
+#endif
 
+#ifdef __MODE_MY__
+        // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        shader.use();
+        shader.setInt("texture1", 0);
+        glBindVertexArray(planeVAO);
+        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+        shader.setMat4("model", glm::mat4(1.0f));
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+#endif
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -296,6 +314,13 @@ int main()
     glDeleteBuffers(1, &cubeVBO);
     glDeleteBuffers(1, &planeVBO);
     glDeleteBuffers(1, &quadVBO);
+    glDeleteRenderbuffers(1, &rbo);
+    glDeleteFramebuffers(1, &framebuffer);
+    glDeleteTextures(1, &textureColorbuffer);
+    glDeleteTextures(1, &cubeTexture);
+    glDeleteTextures(1, &floorTexture);
+    glDeleteProgram(shader.ID);
+    glDeleteProgram(screenShader.ID);
 
     glfwTerminate();
     return 0;

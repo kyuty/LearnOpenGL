@@ -5,8 +5,54 @@ in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
 
+// ------------------- normal ------------------------ 1
+//void main()
+//{
+//    vec3 col = texture(screenTexture, TexCoords).rgb;
+//    FragColor = vec4(col, 1.0);
+//}
+// ------------------- normal ------------------------ 2
+
+// +++++++++++++++++++ gaussian blur ++++++++++++++++++++ 1
+const float offset = 1.0 / 300.0; // 可以更改半径值来控制模糊程度，分母越小越模糊
+
 void main()
 {
-    vec3 col = texture(screenTexture, TexCoords).rgb;
+    vec2 offsets[9] = vec2[](
+        vec2(-offset,  offset), // 左上
+        vec2( 0.0f,    offset), // 正上
+        vec2( offset,  offset), // 右上
+        vec2(-offset,  0.0f),   // 左
+        vec2( 0.0f,    0.0f),   // 中
+        vec2( offset,  0.0f),   // 右
+        vec2(-offset, -offset), // 左下
+        vec2( 0.0f,   -offset), // 正下
+        vec2( offset, -offset)  // 右下
+    );
+
+    // 核效果
+    //float kernel[9] = float[](
+    //    -1, -1, -1,
+    //    -1,  9, -1,
+    //    -1, -1, -1
+    //);
+
+    // 高斯模糊
+    float kernel[9] = float[](
+        1.0 / 16, 2.0 / 16, 1.0 / 16,
+        2.0 / 16, 4.0 / 16, 2.0 / 16,
+        1.0 / 16, 2.0 / 16, 1.0 / 16
+    );
+
+    vec3 sampleTex[9];
+    for(int i = 0; i < 9; i++)
+    {
+        sampleTex[i] = vec3(texture(screenTexture, TexCoords.st + offsets[i]));
+    }
+    vec3 col = vec3(0.0);
+    for(int i = 0; i < 9; i++)
+        col += sampleTex[i] * kernel[i];
+
     FragColor = vec4(col, 1.0);
-} 
+}
+// +++++++++++++++++++ gaussian blur ++++++++++++++++++++ 2

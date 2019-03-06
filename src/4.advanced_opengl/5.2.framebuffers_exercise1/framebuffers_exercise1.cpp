@@ -18,10 +18,14 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path);
+void genFBO(unsigned int* framebuffer, unsigned int* textureColorbuffer, unsigned int* rbo);
 
 // settings
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
+unsigned int current_width = 0;
+unsigned int current_height = 0;
+bool needUpdateFBO = false;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -127,7 +131,7 @@ int main()
         -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
     float planeVertices[] = {
-        // positions          // texture Coords 
+        // positions          // texture Coords
          5.0f, -0.5f,  5.0f,  2.0f, 0.0f,
         -5.0f, -0.5f,  5.0f,  0.0f, 0.0f,
         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
@@ -136,15 +140,27 @@ int main()
         -5.0f, -0.5f, -5.0f,  0.0f, 2.0f,
          5.0f, -0.5f, -5.0f,  2.0f, 2.0f
     };
+    float xMin = 0.1f;
+    float xMax = 1.0f;
+    float yMin = 0.1f;
+    float yMax = 1.0f;
     float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates. NOTE that this plane is now much smaller and at the top of the screen
         // positions   // texCoords
-        -0.3f,  1.0f,  0.0f, 1.0f,
-        -0.3f,  0.7f,  0.0f, 0.0f,
-         0.3f,  0.7f,  1.0f, 0.0f,
+//        -0.3f,  1.0f,  0.0f, 1.0f,
+//        -0.3f,  0.7f,  0.0f, 0.0f,
+//         0.3f,  0.7f,  1.0f, 0.0f,
+//
+//        -0.3f,  1.0f,  0.0f, 1.0f,
+//         0.3f,  0.7f,  1.0f, 0.0f,
+//         0.3f,  1.0f,  1.0f, 1.0f
 
-        -0.3f,  1.0f,  0.0f, 1.0f,
-         0.3f,  0.7f,  1.0f, 0.0f,
-         0.3f,  1.0f,  1.0f, 1.0f
+        xMin,  yMax,  0.0f, 1.0f,
+        xMin,  yMin,  0.0f, 0.0f,
+        xMax,  yMin,  1.0f, 0.0f,
+
+        xMin,  yMax,  0.0f, 1.0f,
+        xMax,  yMin,  1.0f, 0.0f,
+        xMax,  yMax,  1.0f, 1.0f
     };
     // cube VAO
     unsigned int cubeVAO, cubeVBO;
@@ -195,27 +211,13 @@ int main()
 
     // framebuffer configuration
     // -------------------------
-    unsigned int framebuffer;
-    glGenFramebuffers(1, &framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    // create a color attachment texture
-    unsigned int textureColorbuffer;
-    glGenTextures(1, &textureColorbuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-    // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
-    unsigned int rbo;
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCR_WIDTH, SCR_HEIGHT); // use a single renderbuffer object for both a depth AND stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
-                                                                                                  // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    unsigned int framebuffer = 0;
+    unsigned int textureColorbuffer = 0;
+    unsigned int rbo = 0;
+    current_width = SCR_WIDTH;
+    current_height = SCR_HEIGHT;
+    needUpdateFBO = false;
+    genFBO(&framebuffer, &textureColorbuffer, &rbo);
 
     // draw as wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -234,6 +236,10 @@ int main()
         // -----
         processInput(window);
 
+        if (needUpdateFBO) {
+            genFBO(&framebuffer, &textureColorbuffer, &rbo);
+            needUpdateFBO = false;
+        }
 
         // first render pass: mirror texture.
         // bind to framebuffer and draw to color texture as we normally 
@@ -241,6 +247,7 @@ int main()
         // bind to framebuffer and draw scene as we normally would to color texture 
         // ------------------------------------------------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        glViewport(0, 0, current_width, current_height);
         glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
 
         // make sure we clear the framebuffer's content
@@ -249,13 +256,13 @@ int main()
 
         shader.use();
         glm::mat4 model = glm::mat4(1.0f);
-        camera.Yaw   += 180.0f; // rotate the camera's yaw 180 degrees around
-        camera.Pitch += 180.0f; // rotate the camera's pitch 180 degrees around
-        camera.ProcessMouseMovement(0, 0, false); // call this to make sure it updates its camera vectors, note that we disable pitch constrains for this specific case (otherwise we can't reverse camera's pitch values)
+        //camera.Yaw   += 180.0f; // rotate the camera's yaw 180 degrees around
+        //camera.Pitch += 180.0f; // rotate the camera's pitch 180 degrees around
+        //camera.ProcessMouseMovement(0, 0, false); // call this to make sure it updates its camera vectors, note that we disable pitch constrains for this specific case (otherwise we can't reverse camera's pitch values)
         glm::mat4 view = camera.GetViewMatrix();
-        camera.Yaw   -= 180.0f; // reset it back to its original orientation
-        camera.Pitch -= 180.0f;
-        camera.ProcessMouseMovement(0, 0, true); 
+        //camera.Yaw   -= 180.0f; // reset it back to its original orientation
+        //camera.Pitch -= 180.0f;
+        //camera.ProcessMouseMovement(0, 0, true);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
@@ -280,6 +287,7 @@ int main()
         // second render pass: draw as normal
         // ----------------------------------
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport(0, 0, current_width, current_height);
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -315,7 +323,6 @@ int main()
         glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
@@ -330,6 +337,13 @@ int main()
     glDeleteBuffers(1, &cubeVBO);
     glDeleteBuffers(1, &planeVBO);
     glDeleteBuffers(1, &quadVBO);
+    glDeleteTextures(1, &textureColorbuffer);
+    glDeleteFramebuffers(1, &framebuffer);
+    glDeleteRenderbuffers(1, &rbo);
+    glDeleteShader(shader.ID);
+    glDeleteShader(screenShader.ID);
+    glDeleteTextures(1, &cubeTexture);
+    glDeleteTextures(1, &floorTexture);
 
     glfwTerminate();
     return 0;
@@ -356,9 +370,15 @@ void processInput(GLFWwindow *window)
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
+    // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
+    std::cout << "width = " << width << " height = " << height << std::endl;
+    if (current_width != width || current_height != height) {
+        glViewport(0, 0, width, height);
+        current_width = width;
+        current_height = height;
+        needUpdateFBO = true;
+    }
 }
 
 // glfw: whenever the mouse moves, this callback is called
@@ -425,4 +445,37 @@ unsigned int loadTexture(char const * path)
     }
 
     return textureID;
+}
+
+void genFBO(unsigned int* framebuffer, unsigned int* textureColorbuffer, unsigned int* rbo) {
+    glDeleteTextures(1, textureColorbuffer);
+    glDeleteFramebuffers(1, framebuffer);
+    glDeleteRenderbuffers(1, rbo);
+
+    cout << "genFBO framebuffer = " << *framebuffer << " textureColorbuffer = " << *textureColorbuffer << " rbo = " << *rbo << endl;
+    cout << "genFBO current_width = " << current_width << " current_height = " << current_height << endl;
+
+    glGenFramebuffers(1, framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);
+
+    // create a color attachment texture
+    glGenTextures(1, textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, *textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, current_width, current_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *textureColorbuffer, 0);
+
+    // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
+    glGenRenderbuffers(1, rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, *rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, current_width, current_height); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, *rbo); // now actually attach it
+    // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << endl;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    cout << "genFBO framebuffer = " << *framebuffer << " textureColorbuffer = " << *textureColorbuffer << " rbo = " << *rbo << endl;
 }

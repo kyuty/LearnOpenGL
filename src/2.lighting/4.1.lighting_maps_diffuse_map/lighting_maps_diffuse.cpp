@@ -155,13 +155,14 @@ int main()
     glEnableVertexAttribArray(0);
 
     // load textures (we now use a utility function to keep the code more organized)
+    // 加载texture，生成textureId
     // -----------------------------------------------------------------------------
-    unsigned int diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
+    unsigned int diffuseMapTextureID = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
 
     // shader configuration
     // --------------------
     lightingShader.use(); 
-    lightingShader.setInt("material.diffuse", 0);
+    lightingShader.setInt("material.diffuse", 0); // 给shader的Material结构体中的smapler2D传值
 
 
     // render loop
@@ -209,7 +210,7 @@ int main()
 
         // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
+        glBindTexture(GL_TEXTURE_2D, diffuseMapTextureID);
 
         // render the cube
         glBindVertexArray(cubeVAO);

@@ -71,14 +71,6 @@ int main()
         return -1;
     }
 
-    // configure global opengl state
-    // -----------------------------
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
     // build and compile shaders
     // -------------------------
     Shader shader("2.stencil_testing.vs", "2.stencil_testing.fs");
@@ -192,22 +184,39 @@ int main()
         // render
         // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        //glClearStencil(0x00); // if glClearStencil(stencil_ref), will be error.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // don't forget to clear the stencil buffer!
 
+        // configure global opengl state
+        // -----------------------------
+        GLint stencil_ref = 1;
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+        glEnable(GL_STENCIL_TEST);
+        //glStencilFunc(GL_NOTEQUAL, stencil_ref, 0xFF);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // GL_REPLACE表示如果测试通过，应该取stencil_ref写入缓冲区
+
+        // 0.要先绘制地面（绘制地板时确保关闭模板缓冲的写入）
+        // 1.在绘制两个"两个箱子"前，把模板方程设置为GL_ALWAYS，用1更新"两个箱子"将被渲染的片段。
+        // 2.渲染"两个箱子"，写入模板缓冲。
+        // 3.关闭模板写入和深度测试。
+        // 4.每个"两个箱子"放大一点点。
+        // 5.使用一个不同的片段着色器用来输出一个纯颜色。
+        // 6.再次绘制"两个箱子"，但只是当它们的片段的模板值不为1时才进行。
+        // 7.开启模板写入和深度测试。
+
         // set uniforms
-        shaderSingleColor.use();
         glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.GetViewMatrix();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        shaderSingleColor.setMat4("view", view);
-        shaderSingleColor.setMat4("projection", projection);
 
         shader.use();
         shader.setMat4("view", view);
         shader.setMat4("projection", projection);
 
         // draw floor as normal, but don't write the floor to the stencil buffer, we only care about the containers. We set its mask to 0x00 to not write to the stencil buffer.
-        glStencilMask(0x00);
+        // 正常绘制地板，但是我们不写入模版缓冲，我们只关心那两个箱子。我们设置mask为0，不写入模版缓冲.
+        glStencilMask(0x00); // 禁止写入stencil buffer
         // floor
         glBindVertexArray(planeVAO);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
@@ -216,10 +225,11 @@ int main()
         glBindVertexArray(0);
 
         // 1st. render pass, draw objects as normal, writing to the stencil buffer
+        // 第一步，渲染过程，正常绘制对象，写入模板缓冲区
         // --------------------------------------------------------------------
-        glStencilFunc(GL_ALWAYS, 1, 0xFF);
-        glStencilMask(0xFF);
-        // cubes
+        glStencilFunc(GL_ALWAYS, stencil_ref, 0xFF);
+        glStencilMask(0xFF); // 可以写入stencil buffer
+        // draw two cubes(scale is 1)
         glBindVertexArray(cubeVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
@@ -234,13 +244,18 @@ int main()
         // 2nd. render pass: now draw slightly scaled versions of the objects, this time disabling stencil writing.
         // Because the stencil buffer is now filled with several 1s. The parts of the buffer that are 1 are not drawn, thus only drawing 
         // the objects' size differences, making it look like borders.
+        // 第二步，绘制过程：现在绘制已被scale(放大)的物体，这次关闭模版缓冲的写入
+        // 因为模版缓冲区现在填充了几个1。缓冲区未被1填充的地方还没有被绘制，因此仅绘制scale为1.1物体和scale为1.0物体的差异，这看起来像是物体的边框。
         // -----------------------------------------------------------------------------------------------------------------------------
-        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-        glStencilMask(0x00);
-        glDisable(GL_DEPTH_TEST);
         shaderSingleColor.use();
+        shaderSingleColor.setMat4("view", view);
+        shaderSingleColor.setMat4("projection", projection);
+        glStencilFunc(GL_NOTEQUAL, stencil_ref, 0xFF);
+        glStencilMask(0x00);      // 禁止写入stencil buffer
+        glDisable(GL_DEPTH_TEST); // close the depth test // 这里关闭深度检测，就是不想边框被地板挡上
+        shaderSingleColor.use();
+        // draw two cubes(scale is 1.1)
         float scale = 1.1;
-        // cubes
         glBindVertexArray(cubeVAO);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
         model = glm::mat4(1.0f);
@@ -253,8 +268,9 @@ int main()
         model = glm::scale(model, glm::vec3(scale, scale, scale));
         shaderSingleColor.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        // reset the status
         glBindVertexArray(0);
-        glStencilMask(0xFF);
+        glStencilMask(0xFF);// 可以写入stencil buffer
         glEnable(GL_DEPTH_TEST);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

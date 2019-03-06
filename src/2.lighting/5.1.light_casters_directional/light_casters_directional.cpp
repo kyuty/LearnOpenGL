@@ -77,7 +77,7 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader lightingShader("5.1.light_casters.vs", "5.1.light_casters.fs");
-    Shader lampShader("5.1.lamp.vs", "5.1.lamp.fs");
+    //Shader lampShader("5.1.lamp.vs", "5.1.lamp.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -224,10 +224,6 @@ int main()
         // bind specular map
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
-
-        // render the cube
-        // glBindVertexArray(cubeVAO);
-        // glDrawArrays(GL_TRIANGLES, 0, 36);*/
 
         // render containers
         glBindVertexArray(cubeVAO);

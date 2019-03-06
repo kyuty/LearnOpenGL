@@ -155,6 +155,7 @@ int main()
     glEnableVertexAttribArray(0);
 
     // load textures (we now use a utility function to keep the code more organized)
+    // 加载两张纹理，生成两个纹理Id
     // -----------------------------------------------------------------------------
     unsigned int diffuseMap = loadTexture(FileSystem::getPath("resources/textures/container2.png").c_str());
     unsigned int specularMap = loadTexture(FileSystem::getPath("resources/textures/container2_specular.png").c_str());

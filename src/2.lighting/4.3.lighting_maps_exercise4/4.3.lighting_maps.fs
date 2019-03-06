@@ -41,7 +41,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
     
-      // emission
+    // emission
     vec3 emission = texture(material.emission, TexCoords).rgb;
         
     vec3 result = ambient + diffuse + specular + emission;

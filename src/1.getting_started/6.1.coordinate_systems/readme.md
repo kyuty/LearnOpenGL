@@ -33,6 +33,8 @@ ourShader.setMat4("projection", projection);
 
 注意mvp乘的顺序
 
+p * v * m * vec4(pos, 1)
+
 ```
 #version 330 core
 layout (location = 0) in vec3 aPos;

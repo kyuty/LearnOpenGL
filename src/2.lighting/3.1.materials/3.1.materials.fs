@@ -20,8 +20,8 @@ in vec3 FragPos;
 in vec3 Normal;  
   
 uniform vec3 viewPos;
-uniform Material material;
-uniform Light light;
+uniform Material material; // 没有glUniformMaterial,直接往Material结构体里传值即可
+uniform Light light;       // 没有glUniformLight,直接往Light结构体里传值即可
 
 void main()
 {
