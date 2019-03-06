@@ -44,11 +44,7 @@
 
 
 
-另外，glew的安装，见
+另外，glew的安装，见src/1.getting_started/0.01_hello_glfw/readme.md
 
-[glew]: !result(./src/1.getting_started/readme.md)	"glew的mac安装"
-
-soil的安装，见
-
-[soil]: !result(./src/1.getting_started/0.09_textures_combined/readme_install_soil.md)	"soil的mac安装"
+soil的安装，见/src/1.getting_started/0.09_textures_combined/readme_install_soil.md
 
