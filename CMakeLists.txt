@@ -56,6 +56,7 @@ else()
 endif(WIN32)
 
 set(CHAPTERS
+    0.demo
     #0.ori_project
     1.getting_started
     2.lighting
@@ -102,6 +103,10 @@ set(CHAPTERS
 #    0.45_face_culling
 #    0.46_framebuffers_screen_texture
 #)
+
+set(0.demo
+    01.test_layer_depth
+)
 
 set(1.getting_started
     0.01_hello_glfw
