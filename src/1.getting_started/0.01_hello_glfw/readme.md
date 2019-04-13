@@ -40,3 +40,6 @@ in "CMakeLists.txt", add:
     message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
     SET(APPLE_LIBS ${APPLE_LIBS} ${GLFW3_LIBRARY} ${ASSIMP_LIBRARY} ${GLEW_LIBRARY})
 ```
+
+如果assimp找不到，则brew install assimp
+如果glm找不到，则brew install glm

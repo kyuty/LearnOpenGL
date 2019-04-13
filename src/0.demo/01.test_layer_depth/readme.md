@@ -98,3 +98,7 @@ define __MODE_DIFF_DEPTH_DIFF_LAYER_B_A_2__ // depth_A: 0, depth_B: 1; layer_A: 
 上面四种情况的结果都为：
 
 ![image-20190313200856684](md8.png)
+
+
+
+这里还有一种比较好的解释：layer其实就是glPolygonOffset，这里的offset实际上就是在当前的z值加一个offset，以z+offset生效
