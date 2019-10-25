@@ -10,7 +10,7 @@
 
 ### Simple code
 
-生成fbo，textureID，rbo方法
+生成fbo，textureID，rbo的方法
 
 ```c++
 void genFBO(unsigned int* framebuffer, unsigned int* textureColorbuffer, unsigned int* rbo) {
@@ -139,10 +139,17 @@ void main()
     //);
 
     // 高斯模糊
+    //float kernel[9] = float[](
+    //    1.0 / 16, 2.0 / 16, 1.0 / 16,
+    //    2.0 / 16, 4.0 / 16, 2.0 / 16,
+    //    1.0 / 16, 2.0 / 16, 1.0 / 16
+    //);
+  
+  	// 边缘检测
     float kernel[9] = float[](
-        1.0 / 16, 2.0 / 16, 1.0 / 16,
-        2.0 / 16, 4.0 / 16, 2.0 / 16,
-        1.0 / 16, 2.0 / 16, 1.0 / 16
+        1, 1, 1,
+        1, -8, 1,
+        1, 1, 1
     );
 
     vec3 sampleTex[9];
@@ -159,3 +166,20 @@ void main()
 // +++++++++++++++++++ gaussian blur ++++++++++++++++++++ 2
 ```
 
+
+
+高斯模糊效果：
+
+![image-20190418002033013](md1.png)
+
+
+
+核效果：
+
+![image-20190418002216118](md2.png)
+
+
+
+边缘检测：
+
+![image-20190418002646446](md3.png)

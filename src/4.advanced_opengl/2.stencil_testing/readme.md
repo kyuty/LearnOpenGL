@@ -92,7 +92,7 @@ while (!glfwWindowShouldClose(window))
     shaderSingleColor.use();
     shaderSingleColor.setMat4("view", view);
     shaderSingleColor.setMat4("projection", projection);
-    glStencilFunc(GL_NOTEQUAL, stencil_ref, 0xFF);
+    glStencilFunc(GL_NOTEQUAL, stencil_ref, 0xFF); // 当stencil值 不等于 stencil_ref，stencil测试才通过，物体才绘制
     glStencilMask(0x00);      // 禁止写入stencil buffer
     glDisable(GL_DEPTH_TEST); // close the depth test // 这里关闭深度检测，就是不想边框被地板挡上
     shaderSingleColor.use();

@@ -156,6 +156,32 @@ glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 ## 混合
 
+总结：
+
+1. 先画的红色，红色rgba为(1, 0, 0, 1)
+
+2. 后面的绿色，绿色rgba为(0, 1, 0, 0.6)
+
+3. 在两者混合时是在绘制绿色的时候发生的。因为颜色缓冲里已经有红色，我们把红颜色称为“目标颜色 dst color”，我们把要画上去的绿颜色称为“源颜色 source color”。
+
+   公式为：源颜色(1x4向量) * 系数A(float值) + 目标颜色(1x4向量) * 系数B(float值)。
+
+   系数A被称为源因子，系数B被称为目标因子，它们都为一个float类型的值。
+
+   glBlendFunc(系数A，系数B)；即glBlendFunc(源因子，目标因子).
+
+   常见的Alpha混合：source color * source apha + dest color * (1 - source alpha)，即glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+   PremultAlpha混合：source color  * 1 + dest color * (1 - source alpha)，即glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
+
+   这两种都是源颜色的alpha值出现在因子位置上，目标颜色的alpha不出现在因子位置上。
+
+   其他的混合方式见最后。
+
+   下面介绍的demo就是alpha混合。
+
+
+
 虽然直接丢弃片段很好，但它不能让我们渲染半透明的图像。我们要么渲染一个片段，要么完全丢弃它。要想渲染有多个透明度级别的图像，我们需要启用混合(Blending)。和OpenGL大多数的功能一样，我们可以启用GL_BLEND来启用混合：
 
 ```
@@ -180,7 +206,7 @@ OpenGL中的混合是通过下面这个方程来实现的：
 
 
 
-![image-20190226151610103](/Users/wangdong/github/opengl/LearnOpenGL/src/4.advanced_opengl/3.2.blending_sort/md3.jpg)
+![image-20190226151610103](md3.jpg)
 
 
 
@@ -211,7 +237,7 @@ glBlendFunc(GLenum sfactor, GLenum dfactor)函数接受两个参数，来设置�
 | `GL_CONSTANT_ALPHA`           | 因子等于C¯constant的alpha分量       |
 | `GL_ONE_MINUS_CONSTANT_ALPHA` | 因子等于1− C¯constant的alpha分量    |
 
-为了获得之前两个方形的混合结果，我们需要使用源颜色向量的alphaalpha作为源因子，使用1−alpha作为目标因子。这将会产生以下的glBlendFunc：
+为了获得之前两个方形的混合结果，我们需要使用源颜色向量的alpha作为源因子，使用1−alpha作为目标因子。这将会产生以下的glBlendFunc：
 
 ```
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -314,3 +340,72 @@ for(std::map<float,glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sort
 虽然按照距离排序物体这种方法对我们这个场景能够正常工作，但它并没有考虑旋转、缩放或者其它的变换，奇怪形状的物体需要一个不同的计量，而不是仅仅一个位置向量。
 
 在场景中排序物体是一个很困难的技术，很大程度上由你场景的类型所决定，更别说它额外需要消耗的处理能力了。完整渲染一个包含不透明和透明物体的场景并不是那么容易。更高级的技术还有**次序无关透明度(Order Independent Transparency, OIT)**，但这超出本教程的范围了。现在，你还是必须要普通地混合你的物体，但如果你很小心，并且知道目前方法的限制的话，你仍然能够获得一个比较不错的混合实现。
+
+
+
+
+
+
+
+```
+/**
+* No blending mode is used.
+*/
+public static final int   Off = 0;
+
+/**
+* Additive blending. For use with glows and particle emitters.
+* <p>
+* Result = Source Color + Destination Color -> (GL_ONE, GL_ONE)
+*/
+public static final int   Additive = 1;
+
+/**
+* Premultiplied alpha blending, for use with premult alpha textures.
+* <p>
+* Result = Source Color + (Dest Color * (1 - Source Alpha) ) -> (GL_ONE, GL_ONE_MINUS_SRC_ALPHA)
+*/
+public static final int  PremultAlpha = 2;
+
+/**
+* Additive blending that is multiplied with source alpha.
+* For use with glows and particle emitters.
+* <p>
+* Result = (Source Alpha * Source Color) + Dest Color -> (GL_SRC_ALPHA, GL_ONE)
+*/
+public static final int   AlphaAdditive = 3;
+
+/**
+* Color blending, blends in color from dest color
+* using source color.
+* <p>
+* Result = Source Color + (1 - Source Color) * Dest Color -> (GL_ONE, GL_ONE_MINUS_SRC_COLOR)
+*/
+public static final int   Color = 4;
+
+/**
+* Alpha blending, interpolates to source color from dest color
+* using source alpha.
+* <p>
+* Result = Source Alpha * Source Color +
+*          (1 - Source Alpha) * Dest Color -> (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+*/
+public static final int   Alpha = 5;
+
+/**
+* Multiplies the source and dest colors.
+* <p>
+* Result = Source Color * Dest Color -> (GL_DST_COLOR, GL_ZERO)
+*/
+public static final int   Modulate = 6;
+
+/**
+* Multiplies the source and dest colors then doubles the result.
+* <p>
+* Result = 2 * Source Color * Dest Color -> (GL_DST_COLOR, GL_SRC_COLOR)
+*/
+public static final int   ModulateX2 = 7;
+
+public static final int SeparateDstAlpha = 8;
+```
+

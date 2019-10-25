@@ -12,7 +12,7 @@ Framebuffer
 
 `__MODE_MY__`
 
-在framebuffer上，画地面，两个立方体箱子。然后切到0 buffer上，再画plane，纹理用framebuffer对应生成出来的纹理。
+在framebuffer上，画地面plane，两个立方体箱子cube。然后切到0 buffer上，再画地面plane，地面对应的纹理用framebuffer对应生成出来的纹理。
 
 ![image-20190226160443723](result_my.jpg)
 
@@ -20,11 +20,11 @@ Framebuffer
 
 ### Simple code
 
-gen fbo; 
+gen fbo;                                                       // 生成fbo
 
-gen texture : (glTexImage2D     glFramebufferTexture2D))
+gen texture : (glTexImage2D     glFramebufferTexture2D))       // 生成纹理，调用glTexImage2D，只不过参数的pix数据为null，之后再将空纹理跟fbo绑在一起
 
-gen rbo : (glRenderbufferStorage    glFramebufferRenderbuffer)
+gen rbo : (glRenderbufferStorage    glFramebufferRenderbuffer) // 生成render buffer object，并将rbo跟fbo绑在一起
 
 ```
 // framebuffer configuration
@@ -52,13 +52,13 @@ if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 glBindFramebuffer(GL_FRAMEBUFFER, 0);
 ```
 
-bind fbo；
+bind fbo；                                         // 绑定fbo
 
-draw two cubes；draw plane
+draw two cubes；draw plane        // 画两个箱子，画地面
 
-change 0 fbo;
+change 0 fbo;                                    // 切到0的fbo上
 
-draw rect using fbo's texture
+draw rect using fbo's texture         // 画一个长方形的rect，纹理用刚才fbo生成的纹理
 
 ```
 while (!glfwWindowShouldClose(window))
