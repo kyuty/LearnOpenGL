@@ -263,7 +263,7 @@ void main()
 
 ![img](https://learnopengl-cn.github.io/img/04/06/cubemaps_reflection_theory.png)
 
-我们根据观察方向向量I¯I¯和物体的法向量N¯，来计算反射向量R¯。我们**可以使用GLSL内建的reflect函数来计算这个反射向量**。最终的R¯向量将会作为索引/采样立方体贴图的方向向量，返回环境的颜色值。最终的结果是物体看起来反射了天空盒。
+我们根据观察方向向量I¯和物体的法向量N¯，来计算反射向量R¯。我们**可以使用GLSL内建的reflect函数来计算这个反射向量**。最终的R¯向量将会作为索引/采样立方体贴图的方向向量，返回环境的颜色值。最终的结果是物体看起来反射了天空盒。
 
 因为我们已经在场景中配置好天空盒了，创建反射效果并不会很难。我们将会改变箱子的片段着色器，让箱子有反射性：
 
@@ -329,7 +329,7 @@ glDrawArrays(GL_TRIANGLES, 0, 36);
 
 ![img](https://learnopengl-cn.github.io/img/04/06/cubemaps_reflection_nanosuit.png)
 
-这看起来非常棒，但在现实中大部分的模型都不具有完全反射性。我们可以引入反射贴图(Reflection Map)，来给模型更多的细节。与漫反射和镜面光贴图一样，反射贴图也是可以采样的纹理图像，它决定这片段的反射性。通过使用反射贴图，我们可以知道模型的哪些部分该以什么强度显示反射。在本节的练习中，将由你来为我们之前创建的模型加载器中引入反射贴图，显著提升纳米装模型的细节。
+这看起来非常棒，**但在现实中大部分的模型都不具有完全反射性**。我们可以引入**反射贴图(Reflection Map)**，来给模型更多的细节。与漫反射和镜面光贴图一样，反射贴图也是可以采样的纹理图像，它决定这片段的反射性。通过使用反射贴图，我们可以知道模型的哪些部分该以什么强度显示反射。在本节的练习中，将由你来为我们之前创建的模型加载器中引入反射贴图，显著提升纳米装模型的细节。
 
 ## 折射
 
@@ -362,7 +362,7 @@ void main()
 {             
     float ratio = 1.00 / 1.52;
     vec3 I = normalize(Position - cameraPos);
-    vec3 R = refract(I, normalize(Normal), ratio);
+    vec3 R = refrect(I, normalize(Normal), ratio);
     FragColor = vec4(texture(skybox, R).rgb, 1.0);
 }
 ```

@@ -251,10 +251,12 @@ int main()
         glBindVertexArray(0);
 
         // draw skybox as last ------------- begin -------------
+        // 天空盒子的深度(1) 小于等于 深度buffer里的值， 则深度检测通过
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
         // remove translation from the view matrix
-        // 移除位移信息
+        // 移除位移信息: 将4x4矩阵的camera view矩阵变成3x3，就把camera的位移信息移除了
+        // 目的：这将使天空盒移除移位，但保留旋转，玩家仍然能够环顾场景
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
         skyboxShader.setMat4("view", view);
         skyboxShader.setMat4("projection", projection);
