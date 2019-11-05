@@ -41,10 +41,17 @@
 然后重新reload cmake project
 
 这些项目是直接使用glew和soil库，没有使用glad。
-
+    
 
 
 另外，glew的安装，见src/1.getting_started/0.01_hello_glfw/readme.md
 
 soil的安装，见/src/1.getting_started/0.09_textures_combined/readme_install_soil.md
 
+
+
+若clion报错
+
+fatal error: 'inttypes.h' file not found
+
+to see https://stackoverflow.com/a/58628718/6821154
