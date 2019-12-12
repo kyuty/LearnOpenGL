@@ -150,6 +150,7 @@ set(1.getting_started
 
 set(2.lighting
     1.colors
+    1.1.colors_gradient_shader
     2.1.basic_lighting_diffuse
     2.2.basic_lighting_specular
     3.1.materials

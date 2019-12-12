@@ -55,15 +55,17 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float points[] = {
+        // pos x y,   color r g b       // 这里pos就是指位置，这里有4个位置点;
+                                        // 几何着色器会把每个点给变成5个点，给5个点上颜色
         -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // top-left
          0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top-right
          0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // bottom-right
         -0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // bottom-left
     };
     unsigned int VBO, VAO;
-    glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
+    glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
@@ -84,7 +86,7 @@ int main()
         // draw points
         shader.use();
         glBindVertexArray(VAO);
-        glDrawArrays(GL_POINTS, 0, 4);
+        glDrawArrays(GL_POINTS, 0, 4); // 这里只是指定画4个点
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

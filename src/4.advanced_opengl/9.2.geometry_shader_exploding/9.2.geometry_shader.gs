@@ -10,6 +10,7 @@ out vec2 TexCoords;
 
 uniform float time;
 
+// position沿着法向量位移一定距离，实现爆炸的效果
 vec4 explode(vec4 position, vec3 normal)
 {
     float magnitude = 2.0;
@@ -17,6 +18,7 @@ vec4 explode(vec4 position, vec3 normal)
     return position + vec4(direction, 0.0);
 }
 
+// 获取法向量
 vec3 GetNormal()
 {
     vec3 a = vec3(gl_in[0].gl_Position) - vec3(gl_in[1].gl_Position);
