@@ -12,6 +12,9 @@
 
 #include <iostream>
 
+#include <vector>
+#include <assimp/defs.h>
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -80,52 +83,52 @@ int main()
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+//        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+//         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+//        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+//        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//
+//        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//
+//         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//
+//        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+//         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+//        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+//        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+//
+//        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+//         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+//         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+//        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+//        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
     // world space positions of our cubes
     glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3( 1.0f,  0.0f,  0.0f),
+        glm::vec3( -1.0f,  0.0f, 0.0f),
         glm::vec3(-1.5f, -2.2f, -2.5f),
         glm::vec3(-3.8f, -2.0f, -12.3f),
         glm::vec3( 2.4f, -0.4f, -3.5f),
@@ -135,6 +138,52 @@ int main()
         glm::vec3( 1.5f,  0.2f, -1.5f),
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
+
+    std::vector<glm::vec3> all_pos;
+    std::vector<glm::vec3> all_rotate;
+
+    {
+        // init ball
+        float radius = 5.0f;
+        float stepAlpha = 90.0f;
+        float stepBeta = 45.0f;
+        for (float alpha = -90; alpha <= 90; alpha += stepAlpha) { // 绕z轴的夹角alpha度
+            for (float beta = 0; beta < 360; beta += stepBeta) { // 截面转一圈
+                float z = radius * glm::sin(glm::radians(alpha));
+                float new_radius = radius * glm::cos(glm::radians(alpha));
+
+                float x = new_radius * glm::cos(glm::radians(beta));
+                float y = new_radius * glm::sin(glm::radians(beta));
+
+
+//                float cosX = x / radius;
+//                float cosY = y / radius;
+//                float cosZ = z / radius;
+
+//                all_rotate.push_back(glm::vec3(
+//                        AI_MATH_PI / 2.0f - glm::acos(cosX),
+//                        AI_MATH_PI / 2.0f - glm::acos(cosY),
+//                        AI_MATH_PI / 2.0f - glm::acos(cosZ)));
+
+
+
+                all_pos.push_back(glm::vec3(x, y, z));
+
+                //glm::quat q = glm::angleAxis( float(angle_x ), axis0 );;
+                //glm::eulerAngles()
+
+                all_rotate.push_back(glm::vec3(alpha, beta, 0));
+
+                std::cout << "new_radius = " << new_radius << std::endl;
+                std::cout << "x = " << x << " y = " << y << " z = " << z << std::endl;
+//                std::cout << "cosX = " << cosX << " cosY = " << cosY << " cosZ = " << cosZ << std::endl;
+//                std::cout << "glm::acos(cosX) = " << glm::acos(cosX) << " glm::acos(cosY) = " << glm::acos(cosY) << " glm::acos(cosZ) = " << glm::acos(cosZ) << std::endl;
+                std::cout << "alpha = " << alpha << " beta = " << beta << std::endl;
+
+//                if (alpha == -90 || alpha == 90) break;
+            }
+        }
+    }
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -246,18 +295,35 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("view", view);
 
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        ourShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
         // render boxes
         glBindVertexArray(VAO);
-        for (unsigned int i = 0; i < 10; i++)
+        for (unsigned int i = 0; i < 1; i++)
         {
             // calculate the model matrix for each object and pass it to shader before drawing
             glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+
+//            model = glm::rotate(model, all_rotate.at(i).x, glm::vec3(1.0f, 0.f, 0.f));
+//            model = glm::rotate(model, all_rotate.at(i).y, glm::vec3(0.0f, 1.f, 0.f));
+//            model = glm::rotate(model, all_rotate.at(i).z, glm::vec3(0.0f, 0.f, 1.f));
+//            model = glm::rotate(model, glm::radians(all_rotate.at(i).x), glm::vec3(1, 0, 1));
+//            model = glm::rotate(model, glm::radians(all_rotate.at(i).y), glm::vec3(0, 1, 1));
+
+            model = glm::translate(model, all_pos.at(i));
+
+            std::cout << all_pos.at(i).x << " " << all_pos.at(i).y << " " << all_pos.at(i).z << std::endl;
+
+            model = glm::rotate(model, glm::radians(all_rotate.at(i).x), glm::vec3(1, 0, 0));
+            model = glm::rotate(model, glm::radians(all_rotate.at(i).y), glm::vec3(0, 1, 0));
+
+
+
             ourShader.setMat4("model", model);
 
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
         }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

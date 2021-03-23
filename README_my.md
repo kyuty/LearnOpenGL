@@ -55,3 +55,12 @@ soil的安装，见/src/1.getting_started/0.09_textures_combined/readme_install_
 fatal error: 'inttypes.h' file not found
 
 to see https://stackoverflow.com/a/58628718/6821154
+
+---
+
+https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/#poisson-sampling
+
+
+---
+若mac进行了大版本升级，如macOS SDK发生了变更，
+则cmake项目可能会编译不过，需要`git clean -xdf`一下，让git自动删除不需要的目录或文件（bin，cmake-build-debug）
